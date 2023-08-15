@@ -2,6 +2,7 @@ import { parityDB, sapreDB, beconDB, emerdDB, statsDB } from "./db.mjs"
 import axios from "axios"
 const types={1:"parity", 2:"sapre", 3:"becon", 4:"emerd"}
 const Fetch =async (project=1)=>{
+    console.log(`Fetching for ${types[project]}`)
     let {statsNow}=statsDB.data
     const URL = "https://wea.amanda.jewelry/api/project/game_now"
     const headers = {
@@ -18,9 +19,10 @@ const Fetch =async (project=1)=>{
         const game=res.data.data.game_history.list[0]
         statsNow.beginTime=game.begintime
         statsNow[types[project]]="Success"
+        console.log(`Successfuly fetched for ${types[project]}`)
         return game
     } catch (error) {
-        console.log("There is an error fetching response")
+        console.log(`There is an error fetching response for ${types[project]}`)
         console.log(`Error: ${error}`)
         statsNow.error=true
         statsNow[types[project]]="Error"
